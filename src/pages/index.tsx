@@ -9,7 +9,10 @@ const DashBoardTemplate = lazy(
   () => import("@components/dashboard/DashboardTemplate")
 );
 
-const Home: NextPage<any> = ({ lastResourceVersion, items }) => {
+const Home: NextPage<{ lastResourceVersion: string; items: V1Pod }> = ({
+  lastResourceVersion,
+  items,
+}) => {
   return (
     <div>
       <Head>
@@ -31,12 +34,13 @@ export default Home;
 export const getStaticProps = async () => {
   try {
     const { items, metadata }: V1PodList = await fetch(
-      "http://localhost:3000/api/v1/pods"
-    ).then((data) => data.json());
-    console.log({ items, metadata });
+      `http://localhost:3000/api/v1/pods`
+    )
+      .then((res) => res.json())
+      .catch(() => ({ items: null, metadata: null }));
     return {
       props: {
-        lastResourceVersion: metadata?.resourceVersion,
+        lastResourceVersion: metadata?.resourceVersion || "",
         items,
       },
     };

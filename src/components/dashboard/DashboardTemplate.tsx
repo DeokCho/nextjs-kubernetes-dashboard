@@ -1,12 +1,10 @@
 import React from "react";
-import axios from "axios";
 
 import { NextPage } from "next";
 import { V1Pod } from "@kubernetes/client-node/dist/gen/model/V1Pod";
-import { V1PodList } from "@kubernetes/client-node/dist/gen/model/V1PodList";
 
 const DashboardTemplate: NextPage<{
-  items: V1Pod;
+  items: V1Pod | null;
   lastResourceVersion: string;
 }> = ({ items, lastResourceVersion }) => {
   console.log({ items, lastResourceVersion });
